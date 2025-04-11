@@ -46,3 +46,18 @@ export function removeFromCart(productId){
   });
     saveToStorage();
 }
+
+// in my quest to update a delivery option, i need to locate the product(in cart) whom i want to change its delivery option(using the productId i have available) and then update its delivery option to my new delivery option choice
+export function updateDeliveryOption(productId,deliveryOptionId){
+  let matchingItem;
+
+  cart.forEach((cartItem) => {
+   if(productId === cartItem.productId) {
+     matchingItem = cartItem;
+   }
+ });
+
+  matchingItem.deliveryOptionId = deliveryOptionId;
+
+  saveToStorage();
+}
