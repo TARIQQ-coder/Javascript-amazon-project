@@ -1,8 +1,8 @@
 import {cart, removeFromCart,updateDeliveryOption } from '../../data/cart.js';
-import {products} from '../../data/products.js';
+import {products,getProduct} from '../../data/products.js';
 import { formatCurrency } from '../ulits/money.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
-import { deliveryOptions } from '../../data/deliveryOptions.js';
+import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
 
 // after updating our delivery option we can rerun all the existing codes and regenerate all the html to fit the changes to our delivery options
 
@@ -12,26 +12,13 @@ export function renderOrderSummary(){
     cart.forEach((cartItem) => {
       const productId = cartItem.productId;
 
-      let matchingProduct;
-
-      products.forEach((product) => {
-          if(productId === product.id){
-            matchingProduct = product;
-          }
-      });
+      const matchingProduct = getProduct(productId);
 
       // save the cart's delivery id and using it
       const cartDeliveryId = cartItem.deliveryOptionId;
       
       // creating a delivery man (deliveryOption) to hold and execute the delivery(when and pricing) if the cart's delivery id matches the id of the delivery options  have here
-      let deliveryOption;
-
-      // looping through the delivery options to find the matching delivery id
-      deliveryOptions.forEach((option) => {
-          if(option.id === cartDeliveryId){
-            deliveryOption = option;
-          }
-      });
+      const deliveryOption = getDeliveryOption(cartDeliveryId);
 
       // using dayjs to get the delivery date and its format
       const today = dayjs();
